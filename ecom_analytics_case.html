@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Кейс: еком‑аналитика + отчёты (CDI/BDI и карты)</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --card: rgba(255, 255, 255, 0.06);
+        --card2: rgba(255, 255, 255, 0.04);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.7);
+        --muted2: rgba(255, 255, 255, 0.55);
+        --accent: #7c3aed;
+        --good: #22c55e;
+        --warn: #f59e0b;
+        --line: rgba(255, 255, 255, 0.14);
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        --radius: 18px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue",
+          sans-serif;
+        background:
+          radial-gradient(1200px 600px at 20% -10%, rgba(124, 58, 237, 0.42), transparent 60%),
+          radial-gradient(900px 500px at 90% 20%, rgba(34, 197, 94, 0.22), transparent 55%),
+          radial-gradient(900px 600px at 40% 110%, rgba(245, 158, 11, 0.16), transparent 60%),
+          var(--bg);
+        color: var(--text);
+        line-height: 1.55;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 42px 18px 76px;
+      }
+
+      header {
+        padding: 22px 22px 18px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+        box-shadow: var(--shadow);
+      }
+
+      .kicker {
+        color: var(--muted2);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+
+      h1 {
+        margin: 10px 0 10px;
+        font-size: 30px;
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        color: var(--muted);
+        margin: 0;
+        max-width: 78ch;
+      }
+
+      .grid {
+        margin-top: 18px;
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(12, 1fr);
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--card);
+        box-shadow: var(--shadow);
+        padding: 18px 18px 16px;
+      }
+
+      .card h2 {
+        font-size: 16px;
+        margin: 0 0 10px;
+        letter-spacing: 0.01em;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .span-7 {
+        grid-column: span 7;
+      }
+
+      .span-5 {
+        grid-column: span 5;
+      }
+
+      .span-12 {
+        grid-column: span 12;
+      }
+
+      @media (max-width: 920px) {
+        .span-7,
+        .span-5 {
+          grid-column: span 12;
+        }
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+      }
+
+      li {
+        margin: 6px 0;
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: var(--card2);
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .pill strong {
+        color: var(--text);
+        font-weight: 650;
+      }
+
+      .metrics {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(12, 1fr);
+        margin-top: 12px;
+      }
+
+      .metric {
+        grid-column: span 4;
+        padding: 14px 14px 12px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      .metric .value {
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: 0.01em;
+        margin: 0 0 4px;
+      }
+
+      .metric .hint {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .metric.good .value {
+        color: rgba(74, 222, 128, 0.95);
+      }
+
+      .metric.accent .value {
+        color: rgba(167, 139, 250, 0.98);
+      }
+
+      .metric.warn .value {
+        color: rgba(251, 191, 36, 0.98);
+      }
+
+      @media (max-width: 920px) {
+        .metric {
+          grid-column: span 12;
+        }
+      }
+
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.95em;
+        color: rgba(255, 255, 255, 0.86);
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 1px 6px;
+        border-radius: 8px;
+        white-space: nowrap;
+      }
+
+      .doc-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 14px;
+        margin-top: 14px;
+      }
+
+      .doc {
+        grid-column: span 6;
+      }
+
+      @media (max-width: 920px) {
+        .doc {
+          grid-column: span 12;
+        }
+      }
+
+      .note {
+        color: var(--muted2);
+        font-size: 12px;
+        margin-top: 10px;
+      }
+
+      .report {
+        margin-top: 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: rgba(0, 0, 0, 0.18);
+      }
+
+      .report-header {
+        padding: 12px 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 10px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .report-header .title {
+        font-weight: 750;
+        letter-spacing: 0.01em;
+      }
+
+      .report-header .meta {
+        color: var(--muted2);
+        font-size: 12px;
+      }
+
+      iframe {
+        width: 100%;
+        height: 720px;
+        border: 0;
+        background: #0a0f1f;
+      }
+
+      @media (max-width: 920px) {
+        iframe {
+          height: 640px;
+        }
+      }
+
+      .mini {
+        color: var(--muted);
+        font-size: 14px;
+        margin-top: 8px;
+      }
+
+      .formula {
+        margin-top: 10px;
+        padding: 12px 12px 10px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.86);
+        overflow-x: auto;
+      }
+
+      .formula pre {
+        margin: 0;
+        white-space: pre-wrap;
+      }
+
+      @media print {
+        body {
+          background: #fff;
+          color: #111;
+        }
+        header,
+        .card {
+          box-shadow: none;
+        }
+        .report {
+          page-break-inside: avoid;
+        }
+        iframe {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="kicker">Кейс / еком‑аналитика</div>
+        <h1>Развитие аналитической платформы для e‑commerce</h1>
+        <p class="subtitle">
+          С июля 2023 года: аналитик и со‑разработчик методологий/метрик/отчётности для платформы еком‑аналитики. Фокус —
+          прикладные исследования, качество данных, расширение источников и “упаковка” аналитики для бизнеса и партнёров.
+        </p>
+        <div class="pill-row" aria-label="Кратко">
+          <div class="pill"><strong>Роль</strong> Аналитик‑разработчик</div>
+          <div class="pill"><strong>Фокус</strong> e‑commerce · офлайн‑сигналы</div>
+          <div class="pill"><strong>Формат</strong> метрики → отчёты → решения</div>
+        </div>
+      </header>
+
+      <section class="grid" aria-label="Описание кейса">
+        <div class="card span-7">
+          <h2>Задачи</h2>
+          <ul>
+            <li>Разработка подходов, метрик, отчётов и методологий под бизнес‑задачи</li>
+            <li>Повышение качества данных: распознавание производителя, категоризация</li>
+            <li>Подключение новых источников (в т.ч. офлайн‑сигналы)</li>
+            <li>Исследования для ответов на вопросы бизнеса</li>
+            <li>Взаимодействие с внешними и внутренними заказчиками</li>
+            <li>Эвангелизм: обучение, выступления на конференциях и в вузах</li>
+          </ul>
+        </div>
+
+        <div class="card span-5">
+          <h2>Профит (результаты)</h2>
+          <div class="metrics">
+            <div class="metric good">
+              <p class="value">десятки–сотни млн ₽</p>
+              <p class="hint">4 самостоятельных проекта (новые подходы), суммарный эффект</p>
+            </div>
+            <div class="metric accent">
+              <p class="value">≈17% → ≈3%</p>
+              <p class="hint">Снижение доли “неопознанных” данных за счёт алгоритма распознавания</p>
+            </div>
+            <div class="metric warn">
+              <p class="value">Модель продаж</p>
+              <p class="hint">Предсказание/экстраполяция для закрытия “дыр” в данных</p>
+            </div>
+          </div>
+          <p class="note">Важно: в этом кейсе намеренно не указаны бренды/названия компаний.</p>
+        </div>
+
+        <div class="card span-12">
+          <h2>Отчёты и артефакты</h2>
+          <p>
+            Ниже — методология двух отчётов: индексы <code>CDI/BDI</code> (короткая дока) и карта для выбора точек
+            офлайн‑присутствия на основе маршрутов и населения. Интерактивные версии собраны на синтетических данных
+            и доступны по запросу.
+          </p>
+          <ul style="margin-top: 10px">
+            <li>Обзор сервиса (обучающий вебинар) - доступно по запросу.</li>
+            <li>Отдельное направление: все описанные ниже решения и механики реализованы мной.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top: 14px" aria-label="CDI/BDI документация">
+        <h2>Документация: CDI / BDI</h2>
+        <p class="mini">
+          <strong>CDI</strong> (Category Development Index) и <strong>BDI</strong> (Brand Development Index) — индексы “сильных” и
+          “слабых” территорий/сегментов относительно среднего уровня. Их удобно использовать для поиска зон роста, приоритизации
+          маркетинга/дистрибуции и планирования офлайн‑присутствия.
+        </p>
+
+        <div class="doc-grid">
+          <div class="card doc">
+            <h2>Интуиция (простыми словами)</h2>
+            <ul>
+              <li><strong>CDI</strong> отвечает: “Насколько категория здесь развита относительно среднего?”</li>
+              <li><strong>BDI</strong> отвечает: “Насколько бренд/товар здесь силён относительно среднего?”</li>
+              <li>Сравниваем не абсолютные продажи, а <strong>нормированный уровень</strong> (например, на человека или на аудиторию).</li>
+            </ul>
+          </div>
+          <div class="card doc">
+            <h2>Формулы (базовый вариант)</h2>
+            <div class="formula" aria-label="Формулы CDI/BDI">
+              <pre>
+CDI(region) = 100 * ( CategorySales(region) / Population(region) )
+                    / ( CategorySales(total)  / Population(total) )
+
+BDI(region) = 100 * ( BrandSales(region) / Population(region) )
+                    / ( BrandSales(total)  / Population(total) )
+              </pre>
+            </div>
+            <p class="note">
+              На практике вместо <code>Population</code> можно использовать доступную “базу” — аудиторию, домохозяйства, активных покупателей,
+              количество чеков и т.п. Важно, чтобы знаменатель был сопоставим между регионами.
+            </p>
+          </div>
+        </div>
+
+        <div class="doc-grid">
+          <div class="card doc">
+            <h2>Методология расчёта (шаги)</h2>
+            <ul>
+              <li><strong>Выбрать “единицу нормализации”</strong>: население/аудитория/домохозяйства/покупатели.</li>
+              <li><strong>Определить период</strong>: неделя/месяц/квартал, и единые фильтры.</li>
+              <li><strong>Согласовать определение категории</strong>: правила категоризации, справочник, версии.</li>
+              <li><strong>Посчитать продажи/объём</strong> по регионам и в целом.</li>
+              <li><strong>Нормировать</strong> на базу (на 1 человека, 1 покупателя и т.д.).</li>
+              <li><strong>Индексировать</strong> на общий средний уровень (×100).</li>
+              <li><strong>Сегментировать</strong> регионы по квадрантам (см. ниже).</li>
+            </ul>
+          </div>
+          <div class="card doc">
+            <h2>Как интерпретировать (квадранты)</h2>
+            <ul>
+              <li><strong>CDI &gt; 100</strong>, <strong>BDI &gt; 100</strong>: сильная категория и сильный бренд → удержание/масштабирование.</li>
+              <li><strong>CDI &gt; 100</strong>, <strong>BDI &lt; 100</strong>: категория развита, бренд слаб → зона атаки/доля рынка.</li>
+              <li><strong>CDI &lt; 100</strong>, <strong>BDI &gt; 100</strong>: бренд сильнее категории → нишевое лидерство, аккуратно растить.</li>
+              <li><strong>CDI &lt; 100</strong>, <strong>BDI &lt; 100</strong>: слабая зона → минимальная поддержка или “длинный рост”.</li>
+            </ul>
+            <p class="note">
+              Практический совет: для устойчивости добавляйте <strong>пороги по объёму</strong> (например, минимум чеков/продаж),
+              чтобы не “перекосило” индекс на малых числах.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top: 14px" aria-label="Отчёт CDI/BDI">
+        <h2>Отчёт: CDI/BDI</h2>
+        <div class="report">
+          <div class="report-header">
+            <div class="title">CDI/BDI (интерактив)</div>
+            <div class="meta">демо на синтетических данных</div>
+          </div>
+          <iframe
+            src="./demo_cdi_bdi.html"
+            title="CDI/BDI демо (синтетические данные)"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          ></iframe>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top: 14px" aria-label="Документация по карте">
+        <h2>Документация: карты для выбора офлайн‑точки</h2>
+        <p class="mini">
+          Цель карты — помочь выбрать район/локацию для открытия офлайн‑точки, учитывая <strong>маршруты</strong>, <strong>население</strong>
+          и <strong>потенциальный спрос</strong>. Важно: карта — это инструмент приоритизации; финальное решение дополняется полевыми проверками
+          (конкуренты, арендные ставки, трафик по времени суток, ограничения).
+        </p>
+        <div class="doc-grid">
+          <div class="card doc">
+            <h2>Что учитывается</h2>
+            <ul>
+              <li>Маршруты/перемещения (как люди реально перемещаются по городу)</li>
+              <li>Плотность населения и распределение по районам</li>
+              <li>Перекрытие текущей сети (где уже есть точки/партнёры)</li>
+              <li>Сценарии “зоны охвата” (радиусы, изохроны, “время‑до‑точки”)</li>
+            </ul>
+          </div>
+          <div class="card doc">
+            <h2>Методология (упрощённо)</h2>
+            <ul>
+              <li><strong>Разбиваем</strong> город на клетки/районы (геосетка или административные границы).</li>
+              <li><strong>Считаем потенциал</strong>: население × коэффициенты спроса/активности.</li>
+              <li><strong>Добавляем маршруты</strong>: где поток людей “проходит”, а не только “живёт”.</li>
+              <li><strong>Снимаем перекрытие</strong>: не открываем точку там, где зона уже закрыта существующими точками.</li>
+              <li><strong>Ранжируем</strong> районы по интегральному скору и объясняем вклад факторов.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top: 14px" aria-label="Отчёт карты">
+        <h2>Отчёт: карты (маршруты + население)</h2>
+        <div class="report">
+          <div class="report-header">
+            <div class="title">Карта для выбора офлайн‑точки (интерактив)</div>
+            <div class="meta">демо на синтетических данных</div>
+          </div>
+          <iframe
+            src="./demo_geo_map.html"
+            title="Карта офлайн-точек, демо (синтетические данные)"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          ></iframe>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
+

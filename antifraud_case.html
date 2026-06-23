@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Кейс: Антифрод в монетизации и рекламе видеоплатформы</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --card: rgba(255, 255, 255, 0.06);
+        --card2: rgba(255, 255, 255, 0.04);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.7);
+        --muted2: rgba(255, 255, 255, 0.55);
+        --accent: #7c3aed;
+        --accent2: #22c55e;
+        --warn: #f59e0b;
+        --line: rgba(255, 255, 255, 0.14);
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        --radius: 18px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue",
+          sans-serif;
+        background:
+          radial-gradient(1200px 600px at 20% -10%, rgba(124, 58, 237, 0.42), transparent 60%),
+          radial-gradient(900px 500px at 90% 20%, rgba(34, 197, 94, 0.26), transparent 55%),
+          radial-gradient(900px 600px at 40% 110%, rgba(245, 158, 11, 0.18), transparent 60%),
+          var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .container {
+        max-width: 1060px;
+        margin: 0 auto;
+        padding: 42px 18px 72px;
+      }
+
+      header {
+        padding: 22px 22px 18px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+        box-shadow: var(--shadow);
+      }
+
+      .kicker {
+        color: var(--muted2);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+
+      h1 {
+        margin: 10px 0 10px;
+        font-size: 30px;
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        color: var(--muted);
+        margin: 0;
+        max-width: 74ch;
+      }
+
+      .grid {
+        margin-top: 18px;
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(12, 1fr);
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--card);
+        box-shadow: var(--shadow);
+        padding: 18px 18px 16px;
+      }
+
+      .card h2 {
+        font-size: 16px;
+        margin: 0 0 10px;
+        letter-spacing: 0.01em;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .span-7 {
+        grid-column: span 7;
+      }
+
+      .span-5 {
+        grid-column: span 5;
+      }
+
+      .span-12 {
+        grid-column: span 12;
+      }
+
+      @media (max-width: 920px) {
+        .span-7,
+        .span-5 {
+          grid-column: span 12;
+        }
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+      }
+
+      li {
+        margin: 6px 0;
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: var(--card2);
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .pill strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      /* Timeline */
+      .timeline {
+        position: relative;
+        margin-top: 12px;
+        padding: 4px 0 0;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 18px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(180deg, rgba(124, 58, 237, 0.9), rgba(34, 197, 94, 0.75));
+        opacity: 0.75;
+      }
+
+      .t-item {
+        position: relative;
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 14px;
+        padding: 14px 0 14px 0;
+        margin-left: 0;
+      }
+
+      .t-item::before {
+        content: "";
+        position: absolute;
+        left: 10px;
+        top: 22px;
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 2px solid rgba(255, 255, 255, 0.65);
+        box-shadow: 0 0 0 6px rgba(124, 58, 237, 0.12);
+      }
+
+      .t-label {
+        padding-left: 44px;
+        color: var(--text);
+        font-weight: 650;
+        letter-spacing: 0.01em;
+      }
+
+      .t-body {
+        padding: 14px 14px 12px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .t-body h3 {
+        margin: 0 0 8px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.88);
+        font-weight: 650;
+      }
+
+      .t-body ul {
+        margin: 0;
+      }
+
+      @media (max-width: 640px) {
+        .t-item {
+          grid-template-columns: 1fr;
+        }
+        .t-label {
+          padding-left: 44px;
+        }
+      }
+
+      .metrics {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(12, 1fr);
+      }
+
+      .metric {
+        grid-column: span 4;
+        padding: 14px 14px 12px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      .metric .value {
+        font-size: 22px;
+        font-weight: 750;
+        letter-spacing: 0.01em;
+        margin: 0 0 4px;
+      }
+
+      .metric .hint {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .metric.accent .value {
+        color: rgba(167, 139, 250, 0.98);
+      }
+
+      .metric.good .value {
+        color: rgba(74, 222, 128, 0.95);
+      }
+
+      .metric.warn .value {
+        color: rgba(251, 191, 36, 0.98);
+      }
+
+      @media (max-width: 920px) {
+        .metric {
+          grid-column: span 12;
+        }
+      }
+
+      .footer {
+        margin-top: 18px;
+        color: var(--muted2);
+        font-size: 12px;
+      }
+
+      /* Print */
+      @media print {
+        body {
+          background: #fff;
+          color: #111;
+        }
+        header,
+        .card,
+        .t-body,
+        .metric {
+          box-shadow: none;
+        }
+        .container {
+          padding: 0;
+        }
+        .timeline::before {
+          background: #444;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="kicker">Кейс / Антифрод</div>
+        <h1>Антифрод в монетизации и рекламе видеоплатформы</h1>
+        <p class="subtitle">
+          Разработка антифрод‑решений для выявления накруток просмотров и рекламного фрода: от MVP‑скоринга каналов/видео до
+          перехода к event‑level блокировкам и подготовке near real‑time антифрода.
+        </p>
+        <div class="pill-row" aria-label="Кратко">
+          <div class="pill"><strong>Фокус</strong> IVT / SIVT / GIVT</div>
+          <div class="pill"><strong>Формат</strong> алгоритмы + продукт + процессы</div>
+          <div class="pill"><strong>Инструменты</strong> Python · SQL · Streamlit</div>
+        </div>
+      </header>
+
+      <section class="grid" aria-label="Описание кейса">
+        <div class="card span-7">
+          <h2>Контекст</h2>
+          <p>
+            Задача была поставлена без четких целей и формулировок. Я собрал требования, согласовал с бизнесом критерии и
+            метрики эффективности, погрузился в данные и запустил итеративную разработку решений.
+          </p>
+        </div>
+        <div class="card span-5">
+          <h2>Роль и взаимодействие</h2>
+          <ul>
+            <li>Взаимодействие с заказчиками: монетизация, модерация, коммерция и реклама</li>
+            <li>Коммуникация с верификаторами, обработка жалоб и апелляций</li>
+            <li>Руководство группой web‑разработки, дата‑инженеров и системных аналитиков</li>
+          </ul>
+        </div>
+
+        <div class="card span-12">
+          <h2>Ключевые достижения</h2>
+          <ul>
+            <li>Алгоритмы детекции накруток просмотров: математическое моделирование и техническая реализация</li>
+            <li>Web‑приложения для быстрой проверки каналов на накрутку (Streamlit)</li>
+            <li>Алгоритмы выявления рекламных фродовых событий: переход от блокировки каналов к блокировке событий</li>
+            <li>Эксперименты для валидации эффективности и калибровки IVT на всем трафике</li>
+            <li>Продуктивизация: MR/код‑ревью, тестирование, CI/CD</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top: 14px" aria-label="Таймлайн">
+        <h2>Таймлайн</h2>
+        <div class="timeline" role="list">
+          <div class="t-item" role="listitem">
+            <div class="t-label">1.5 месяца</div>
+            <div class="t-body">
+              <h3>MVP и первые меры</h3>
+              <ul>
+                <li>MVP‑скоринг каналов/видео (первая версия алгоритмов)</li>
+                <li>Внедрение “заморозки” вывода денег для предотвращения вывода накрученных начислений</li>
+                <li>Ручные меры: отключение рекламы, расторжение договора монетизации (ручной режим)</li>
+                <li>Обработка жалоб и апелляций (ручной режим)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="t-item" role="listitem">
+            <div class="t-label">2.5 месяца</div>
+            <div class="t-body">
+              <h3>Усиление алгоритмов и “переход в атаку”</h3>
+              <ul>
+                <li>Улучшенные алгоритмы; проверка входящих заявок на монетизацию</li>
+                <li>Защита проекта на уровне C1, еженедельные отчеты</li>
+                <li>Web‑приложение на Streamlit для проверки каналов (полностью разработано мной)</li>
+                <li>Проработка механизма автоматического расторжения договора (взаимодействие систем)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="t-item" role="listitem">
+            <div class="t-label">5 месяцев</div>
+            <div class="t-body">
+              <h3>IP‑скоринг и антифрод по событиям рекламы</h3>
+              <ul>
+                <li>Скоринг IP + подключение данных сторонних баз</li>
+                <li>Классификация фрода: SIVT / GIVT / IVT</li>
+                <li>Найм и развитие команды (3 аналитика)</li>
+                <li>Блокировка фродовых событий показа рекламы по IP</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="t-item" role="listitem">
+            <div class="t-label">&gt; 8 месяцев</div>
+            <div class="t-body">
+              <h3>Переход к ML и near real‑time</h3>
+              <ul>
+                <li>Старт перехода на ML‑антифрод</li>
+                <li>Развитие собственной антифрод‑платформы; подготовка к near real‑time антифроду</li>
+                <li>Масштабная амнистия каналов; сверка и калибровка по бенчмаркам верификаторов</li>
+                <li>Эксперименты по калибровке IVT на всем трафике</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top: 14px" aria-label="Результаты">
+        <h2>Результаты</h2>
+        <div class="metrics" style="margin-top: 12px">
+          <div class="metric accent">
+            <p class="value">сотни млн ₽</p>
+            <p class="hint">Доказанная экономия за ~8 месяцев работы</p>
+          </div>
+          <div class="metric good">
+            <p class="value">LTV ×10+</p>
+            <p class="hint">Рост лояльности рекламодателей</p>
+          </div>
+          <div class="metric warn">
+            <p class="value">Качество</p>
+            <p class="hint">Повышение качества рекламной площадки</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid" style="margin-top: 14px" aria-label="Технологии">
+        <div class="card span-12">
+          <h2>Стек и практики</h2>
+          <div class="pill-row">
+            <div class="pill"><strong>Языки</strong> Python · SQL</div>
+            <div class="pill"><strong>Данные</strong> ClickHouse · Trino</div>
+            <div class="pill"><strong>Оркестрация</strong> Airflow</div>
+            <div class="pill"><strong>Хранилища</strong> S3</div>
+            <div class="pill"><strong>Продукт</strong> Streamlit</div>
+            <div class="pill"><strong>Prod</strong> MR · Код‑ревью · CI/CD · Тестирование</div>
+          </div>
+          <p class="footer">
+            Примечание: формулировки и метрики можно быстро адаптировать под конкретную вакансию (Anti‑Fraud / DS / Analyst /
+            TeamLead).
+          </p>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
