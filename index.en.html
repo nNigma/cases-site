@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Негмат Исхаков - кейсы аналитики</title>
+    <title>Negmat Iskhakov - analytics case studies</title>
     <style>
       :root {
         --bg: #0b1020;
@@ -38,7 +38,7 @@
       }
       h1 { margin: 0 0 8px; font-size: 30px; }
       .sub { color: var(--muted); margin: 0; }
-      .sub-en { color: var(--muted2); margin: 6px 0 0; font-size: 14px; }
+      .sub-ru { color: var(--muted2); margin: 6px 0 0; font-size: 14px; }
       .grid { margin-top: 18px; display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
       @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
       .card {
@@ -55,35 +55,36 @@
       .card p { margin: 0; color: var(--muted); font-size: 14px; }
       .card .go { margin-top: 12px; color: var(--muted2); font-size: 13px; }
       .note { margin-top: 18px; color: var(--muted2); font-size: 12px; }
+      .lang { display: flex; justify-content: flex-end; gap: 6px; margin-bottom: 10px; font-size: 13px; }
     </style>
   </head>
   <body>
     <div class="container">
       <header>
-        <div style="display: flex; justify-content: flex-end; gap: 6px; margin-bottom: 10px; font-size: 13px">
-          <span style="color: rgba(255, 255, 255, 0.92)">RU</span>
+        <div class="lang">
+          <a href="./index.html" style="color: rgba(255, 255, 255, 0.6)">RU</a>
           <span style="color: rgba(255, 255, 255, 0.3)">·</span>
-          <a href="./index.en.html" style="color: rgba(255, 255, 255, 0.6)">EN</a>
+          <span style="color: rgba(255, 255, 255, 0.92)">EN</span>
         </div>
-        <h1>Негмат Исхаков</h1>
-        <p class="sub">Аналитик данных - строю аналитику руками и веду команду (играющий тренер).</p>
-        <p class="sub-en">Senior Data Analyst - hands-on, currently leading the function.</p>
+        <h1>Negmat Iskhakov</h1>
+        <p class="sub">Senior Data Analyst - hands-on, currently leading the function (player-coach).</p>
+        <p class="sub-ru">Аналитик данных - строю аналитику руками и веду команду.</p>
       </header>
 
       <section class="grid">
-        <a class="card" href="./antifraud_case.html">
-          <h2>Антифрод в монетизации и рекламе</h2>
-          <p>Алгоритмы детекции накруток и рекламного фрода: от MVP-скоринга каналов до event-level блокировок и near real-time.</p>
-          <div class="go">Открыть кейс →</div>
+        <a class="card" href="./antifraud_case.en.html">
+          <h2>Anti-fraud in monetization & advertising</h2>
+          <p>Detecting view inflation and ad fraud: from MVP channel scoring to event-level blocking and near real-time.</p>
+          <div class="go">Open case →</div>
         </a>
-        <a class="card" href="./ecom_analytics_case.html">
-          <h2>Аналитическая платформа для e-commerce</h2>
-          <p>Методологии и метрики (CDI/BDI), карта для выбора офлайн-точек, качество данных. С интерактивными демо.</p>
-          <div class="go">Открыть кейс →</div>
+        <a class="card" href="./ecom_analytics_case.en.html">
+          <h2>Analytics platform for e-commerce</h2>
+          <p>Methodologies & metrics (CDI/BDI), an offline-location map, data quality. With interactive demos.</p>
+          <div class="go">Open case →</div>
         </a>
       </section>
 
-      <p class="note">Кейсы обезличены: без названий компаний, цифры приведены в относительных величинах.</p>
+      <p class="note">Cases are anonymized: no company names, figures are given in relative terms.</p>
     </div>
   </body>
 </html>

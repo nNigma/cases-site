@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Case: e-commerce analytics + reports (CDI/BDI and maps)</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --card: rgba(255, 255, 255, 0.06);
+        --card2: rgba(255, 255, 255, 0.04);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.7);
+        --muted2: rgba(255, 255, 255, 0.55);
+        --accent: #7c3aed;
+        --good: #22c55e;
+        --warn: #f59e0b;
+        --line: rgba(255, 255, 255, 0.14);
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        --radius: 18px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue",
+          sans-serif;
+        background:
+          radial-gradient(1200px 600px at 20% -10%, rgba(124, 58, 237, 0.42), transparent 60%),
+          radial-gradient(900px 500px at 90% 20%, rgba(34, 197, 94, 0.22), transparent 55%),
+          radial-gradient(900px 600px at 40% 110%, rgba(245, 158, 11, 0.16), transparent 60%),
+          var(--bg);
+        color: var(--text);
+        line-height: 1.55;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 42px 18px 76px;
+      }
+
+      header {
+        padding: 22px 22px 18px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+        box-shadow: var(--shadow);
+      }
+
+      .kicker {
+        color: var(--muted2);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+
+      h1 {
+        margin: 10px 0 10px;
+        font-size: 30px;
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        color: var(--muted);
+        margin: 0;
+        max-width: 78ch;
+      }
+
+      .grid {
+        margin-top: 18px;
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(12, 1fr);
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--card);
+        box-shadow: var(--shadow);
+        padding: 18px 18px 16px;
+      }
+
+      .card h2 {
+        font-size: 16px;
+        margin: 0 0 10px;
+        letter-spacing: 0.01em;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .span-7 {
+        grid-column: span 7;
+      }
+
+      .span-5 {
+        grid-column: span 5;
+      }
+
+      .span-12 {
+        grid-column: span 12;
+      }
+
+      @media (max-width: 920px) {
+        .span-7,
+        .span-5 {
+          grid-column: span 12;
+        }
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+      }
+
+      li {
+        margin: 6px 0;
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: var(--card2);
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .pill strong {
+        color: var(--text);
+        font-weight: 650;
+      }
+
+      .metrics {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(12, 1fr);
+        margin-top: 12px;
+      }
+
+      .metric {
+        grid-column: span 4;
+        padding: 14px 14px 12px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      .metric .value {
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: 0.01em;
+        margin: 0 0 4px;
+      }
+
+      .metric .hint {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .metric.good .value {
+        color: rgba(74, 222, 128, 0.95);
+      }
+
+      .metric.accent .value {
+        color: rgba(167, 139, 250, 0.98);
+      }
+
+      .metric.warn .value {
+        color: rgba(251, 191, 36, 0.98);
+      }
+
+      @media (max-width: 920px) {
+        .metric {
+          grid-column: span 12;
+        }
+      }
+
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.95em;
+        color: rgba(255, 255, 255, 0.86);
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 1px 6px;
+        border-radius: 8px;
+        white-space: nowrap;
+      }
+
+      .doc-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 14px;
+        margin-top: 14px;
+      }
+
+      .doc {
+        grid-column: span 6;
+      }
+
+      @media (max-width: 920px) {
+        .doc {
+          grid-column: span 12;
+        }
+      }
+
+      .note {
+        color: var(--muted2);
+        font-size: 12px;
+        margin-top: 10px;
+      }
+
+      .report {
+        margin-top: 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: rgba(0, 0, 0, 0.18);
+      }
+
+      .report-header {
+        padding: 12px 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 10px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .report-header .title {
+        font-weight: 750;
+        letter-spacing: 0.01em;
+      }
+
+      .report-header .meta {
+        color: var(--muted2);
+        font-size: 12px;
+      }
+
+      iframe {
+        width: 100%;
+        height: 720px;
+        border: 0;
+        background: #0a0f1f;
+      }
+
+      @media (max-width: 920px) {
+        iframe {
+          height: 640px;
+        }
+      }
+
+      .mini {
+        color: var(--muted);
+        font-size: 14px;
+        margin-top: 8px;
+      }
+
+      .formula {
+        margin-top: 10px;
+        padding: 12px 12px 10px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.86);
+        overflow-x: auto;
+      }
+
+      .formula pre {
+        margin: 0;
+        white-space: pre-wrap;
+      }
+
+      @media print {
+        body {
+          background: #fff;
+          color: #111;
+        }
+        header,
+        .card {
+          box-shadow: none;
+        }
+        .report {
+          page-break-inside: avoid;
+        }
+        iframe {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div style="display: flex; justify-content: flex-end; gap: 6px; margin-bottom: 10px; font-size: 13px">
+          <a href="./ecom_analytics_case.html" style="color: rgba(255, 255, 255, 0.6)">RU</a>
+          <span style="color: rgba(255, 255, 255, 0.3)">·</span>
+          <span style="color: rgba(255, 255, 255, 0.92)">EN</span>
+        </div>
+        <div class="kicker">Case / e-commerce analytics</div>
+        <h1>Building an analytics platform for e-commerce</h1>
+        <p class="subtitle">
+          Analyst and co-developer of methodologies, metrics and reporting for an e-commerce analytics platform.
+          Focus - applied research, data quality, new data sources, and packaging analytics for business and partners.
+        </p>
+        <div class="pill-row" aria-label="Summary">
+          <div class="pill"><strong>Role</strong> Analyst-developer</div>
+          <div class="pill"><strong>Focus</strong> e-commerce · offline signals</div>
+          <div class="pill"><strong>Format</strong> metrics → reports → decisions</div>
+        </div>
+      </header>
+
+      <section class="grid" aria-label="Case overview">
+        <div class="card span-7">
+          <h2>Tasks</h2>
+          <ul>
+            <li>Building approaches, metrics, reports and methodologies for business needs</li>
+            <li>Improving data quality: manufacturer recognition, categorization</li>
+            <li>Adding new data sources (including offline signals)</li>
+            <li>Research to answer business questions</li>
+            <li>Working with external and internal stakeholders</li>
+            <li>Evangelism: training, talks at conferences and universities</li>
+          </ul>
+        </div>
+
+        <div class="card span-5">
+          <h2>Impact (results)</h2>
+          <div class="metrics">
+            <div class="metric good">
+              <p class="value">tens–hundreds of M ₽</p>
+              <p class="hint">4 independent projects (new approaches), combined effect</p>
+            </div>
+            <div class="metric accent">
+              <p class="value">≈17% → ≈3%</p>
+              <p class="hint">Lower share of "unrecognized" data thanks to a recognition algorithm</p>
+            </div>
+            <div class="metric warn">
+              <p class="value">Sales model</p>
+              <p class="hint">Prediction/extrapolation to close data gaps</p>
+            </div>
+          </div>
+          <p class="note">Note: brand and company names are intentionally omitted in this case.</p>
+        </div>
+
+        <div class="card span-12">
+          <h2>Reports and artifacts</h2>
+          <p>
+            Below is the methodology of two reports: <code>CDI/BDI</code> indices (short doc) and a map for choosing
+            offline-presence locations based on routes and population. Interactive versions use synthetic data
+            and are available on request.
+          </p>
+          <ul style="margin-top: 10px">
+            <li>Service overview (training webinar) - available on request.</li>
+            <li>A separate workstream: all the solutions and mechanics below were built by me.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top: 14px" aria-label="CDI/BDI documentation">
+        <h2>Documentation: CDI / BDI</h2>
+        <p class="mini">
+          <strong>CDI</strong> (Category Development Index) and <strong>BDI</strong> (Brand Development Index) are indices of
+          "strong" and "weak" territories/segments relative to the average. They are handy for finding growth zones,
+          prioritizing marketing/distribution and planning offline presence.
+        </p>
+
+        <div class="doc-grid">
+          <div class="card doc">
+            <h2>Intuition (in plain words)</h2>
+            <ul>
+              <li><strong>CDI</strong> answers: "How developed is the category here relative to the average?"</li>
+              <li><strong>BDI</strong> answers: "How strong is the brand/product here relative to the average?"</li>
+              <li>We compare not absolute sales but a <strong>normalized level</strong> (e.g. per person or per audience).</li>
+            </ul>
+          </div>
+          <div class="card doc">
+            <h2>Formulas (basic)</h2>
+            <div class="formula" aria-label="CDI/BDI formulas">
+              <pre>
+CDI(region) = 100 * ( CategorySales(region) / Population(region) )
+                    / ( CategorySales(total)  / Population(total) )
+
+BDI(region) = 100 * ( BrandSales(region) / Population(region) )
+                    / ( BrandSales(total)  / Population(total) )
+              </pre>
+            </div>
+            <p class="note">
+              In practice, instead of <code>Population</code> you can use any available "base" - audience, households, active buyers,
+              number of receipts, etc. What matters is that the denominator is comparable across regions.
+            </p>
+          </div>
+        </div>
+
+        <div class="doc-grid">
+          <div class="card doc">
+            <h2>Calculation methodology (steps)</h2>
+            <ul>
+              <li><strong>Pick a "normalization unit"</strong>: population/audience/households/buyers.</li>
+              <li><strong>Define the period</strong>: week/month/quarter, and consistent filters.</li>
+              <li><strong>Agree the category definition</strong>: categorization rules, dictionary, versions.</li>
+              <li><strong>Compute sales/volume</strong> by region and overall.</li>
+              <li><strong>Normalize</strong> to the base (per 1 person, 1 buyer, etc.).</li>
+              <li><strong>Index</strong> against the overall average (×100).</li>
+              <li><strong>Segment</strong> regions into quadrants (see below).</li>
+            </ul>
+          </div>
+          <div class="card doc">
+            <h2>How to interpret (quadrants)</h2>
+            <ul>
+              <li><strong>CDI &gt; 100</strong>, <strong>BDI &gt; 100</strong>: strong category and strong brand → retain/scale.</li>
+              <li><strong>CDI &gt; 100</strong>, <strong>BDI &lt; 100</strong>: developed category, weak brand → attack zone/market share.</li>
+              <li><strong>CDI &lt; 100</strong>, <strong>BDI &gt; 100</strong>: brand stronger than category → niche lead, grow carefully.</li>
+              <li><strong>CDI &lt; 100</strong>, <strong>BDI &lt; 100</strong>: weak zone → minimal support or "long game".</li>
+            </ul>
+            <p class="note">
+              Practical tip: for robustness add <strong>volume thresholds</strong> (e.g. minimum receipts/sales),
+              so the index isn't "skewed" on small numbers.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top: 14px" aria-label="CDI/BDI report">
+        <h2>Report: CDI/BDI</h2>
+        <div class="report">
+          <div class="report-header">
+            <div class="title">CDI/BDI (interactive)</div>
+            <div class="meta">demo on synthetic data</div>
+          </div>
+          <iframe
+            src="./demo_cdi_bdi.en.html"
+            title="CDI/BDI demo (synthetic data)"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          ></iframe>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top: 14px" aria-label="Map documentation">
+        <h2>Documentation: maps for choosing an offline location</h2>
+        <p class="mini">
+          The map helps choose a district/location to open an offline point, accounting for <strong>routes</strong>, <strong>population</strong>
+          and <strong>potential demand</strong>. Note: the map is a prioritization tool; the final decision is backed by field checks
+          (competitors, rent, traffic by time of day, constraints).
+        </p>
+        <div class="doc-grid">
+          <div class="card doc">
+            <h2>What is considered</h2>
+            <ul>
+              <li>Routes/movement (how people actually move around the city)</li>
+              <li>Population density and distribution across districts</li>
+              <li>Overlap with the existing network (where points/partners already are)</li>
+              <li>"Coverage zone" scenarios (radii, isochrones, "time-to-point")</li>
+            </ul>
+          </div>
+          <div class="card doc">
+            <h2>Methodology (simplified)</h2>
+            <ul>
+              <li><strong>Split</strong> the city into cells/districts (geo-grid or administrative borders).</li>
+              <li><strong>Estimate potential</strong>: population × demand/activity coefficients.</li>
+              <li><strong>Add routes</strong>: where the flow of people "passes through", not only "lives".</li>
+              <li><strong>Remove overlap</strong>: don't open where a zone is already covered by existing points.</li>
+              <li><strong>Rank</strong> districts by an integral score and explain the factor contributions.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top: 14px" aria-label="Map report">
+        <h2>Report: maps (routes + population)</h2>
+        <div class="report">
+          <div class="report-header">
+            <div class="title">Map for choosing an offline location (interactive)</div>
+            <div class="meta">demo on synthetic data</div>
+          </div>
+          <iframe
+            src="./demo_geo_map.en.html"
+            title="Offline-location map, demo (synthetic data)"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          ></iframe>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
+

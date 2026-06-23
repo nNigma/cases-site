@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CDI/BDI - demo (synthetic data)</title>
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+    <style>
+      html, body {
+        margin: 0;
+        background: #0a0f1f;
+        color: rgba(255, 255, 255, 0.9);
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      }
+      .wrap { padding: 10px 12px 4px; }
+      .cap { color: rgba(255, 255, 255, 0.55); font-size: 12px; margin: 2px 2px 8px; }
+      #chart { width: 100%; height: 560px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="cap">
+        Synthetic data. Bubble size = sales volume; the 100 lines mark the market average.
+        Quadrants: grow / attack / niche / hold back.
+      </div>
+      <div id="chart"></div>
+    </div>
+    <script>
+      const regions = ["Region 01","Region 02","Region 03","Region 04","Region 05","Region 06","Region 07","Region 08","Region 09","Region 10","Region 11","Region 12","Region 13","Region 14","Region 15"];
+      const cdi = [138,120,108,131,142,115,126,82,71,93,88,76,64,95,69];
+      const bdi = [145,112,128,104,78,88,67,134,116,121,84,72,91,96,63];
+      const sales = [190,150,95,120,160,110,130,70,55,85,60,45,40,75,38];
+
+      function qcolor(c, b) {
+        if (c >= 100 && b >= 100) return "#4ade80";
+        if (c >= 100 && b < 100) return "#fbbf24";
+        if (c < 100 && b >= 100) return "#60a5fa";
+        return "#f87171";
+      }
+      const colors = cdi.map((c, i) => qcolor(c, bdi[i]));
+      const sizeref = (2 * Math.max.apply(null, sales)) / (40 * 40);
+
+      const trace = {
+        x: cdi, y: bdi, text: regions, customdata: sales,
+        mode: "markers+text", type: "scatter",
+        textposition: "top center", textfont: { size: 9, color: "rgba(255,255,255,0.55)" },
+        marker: {
+          size: sales, sizemode: "area", sizeref: sizeref,
+          color: colors, opacity: 0.9, line: { color: "rgba(255,255,255,0.5)", width: 1 }
+        },
+        hovertemplate: "%{text}<br>CDI %{x} · BDI %{y}<br>volume %{customdata}<extra></extra>"
+      };
+
+      const layout = {
+        paper_bgcolor: "#0a0f1f", plot_bgcolor: "#0a0f1f",
+        font: { color: "rgba(255,255,255,0.8)" },
+        margin: { l: 55, r: 20, t: 10, b: 46 }, showlegend: false,
+        xaxis: { title: "CDI - category development", range: [55, 160], zeroline: false, gridcolor: "rgba(255,255,255,0.08)" },
+        yaxis: { title: "BDI - brand development", range: [50, 165], zeroline: false, gridcolor: "rgba(255,255,255,0.08)" },
+        shapes: [
+          { type: "line", x0: 100, x1: 100, y0: 50, y1: 165, line: { color: "rgba(255,255,255,0.35)", dash: "dash", width: 1 } },
+          { type: "line", x0: 55, x1: 160, y0: 100, y1: 100, line: { color: "rgba(255,255,255,0.35)", dash: "dash", width: 1 } }
+        ],
+        annotations: [
+          { x: 150, y: 160, text: "grow", showarrow: false, font: { color: "rgba(74,222,128,0.9)", size: 11 } },
+          { x: 150, y: 55, text: "attack", showarrow: false, font: { color: "rgba(251,191,36,0.9)", size: 11 } },
+          { x: 60, y: 160, text: "niche", showarrow: false, font: { color: "rgba(96,165,250,0.9)", size: 11 } },
+          { x: 62, y: 55, text: "hold back", showarrow: false, font: { color: "rgba(248,113,113,0.9)", size: 11 } }
+        ]
+      };
+
+      Plotly.newPlot("chart", [trace], layout, { displayModeBar: false, responsive: true });
+    </script>
+  </body>
+</html>

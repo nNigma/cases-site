@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Кейс: Антифрод в монетизации и рекламе видеоплатформы</title>
+    <title>Case: Anti-fraud in monetization & advertising (video platform)</title>
     <style>
       :root {
         --bg: #0b1020;
@@ -303,141 +303,140 @@
     <div class="container">
       <header>
         <div style="display: flex; justify-content: flex-end; gap: 6px; margin-bottom: 10px; font-size: 13px">
-          <span style="color: rgba(255, 255, 255, 0.92)">RU</span>
+          <a href="./antifraud_case.html" style="color: rgba(255, 255, 255, 0.6)">RU</a>
           <span style="color: rgba(255, 255, 255, 0.3)">·</span>
-          <a href="./antifraud_case.en.html" style="color: rgba(255, 255, 255, 0.6)">EN</a>
+          <span style="color: rgba(255, 255, 255, 0.92)">EN</span>
         </div>
-        <div class="kicker">Кейс / Антифрод</div>
-        <h1>Антифрод в монетизации и рекламе видеоплатформы</h1>
+        <div class="kicker">Case / Anti-fraud</div>
+        <h1>Anti-fraud in monetization & advertising at a video platform</h1>
         <p class="subtitle">
-          Разработка антифрод‑решений для выявления накруток просмотров и рекламного фрода: от MVP‑скоринга каналов/видео до
-          перехода к event‑level блокировкам и подготовке near real‑time антифрода.
+          Building anti-fraud solutions to detect view inflation and ad fraud: from MVP scoring of channels/videos
+          to event-level blocking and preparing near real-time anti-fraud.
         </p>
-        <div class="pill-row" aria-label="Кратко">
-          <div class="pill"><strong>Фокус</strong> IVT / SIVT / GIVT</div>
-          <div class="pill"><strong>Формат</strong> алгоритмы + продукт + процессы</div>
-          <div class="pill"><strong>Инструменты</strong> Python · SQL · Streamlit</div>
+        <div class="pill-row" aria-label="Summary">
+          <div class="pill"><strong>Focus</strong> IVT / SIVT / GIVT</div>
+          <div class="pill"><strong>Format</strong> algorithms + product + process</div>
+          <div class="pill"><strong>Tools</strong> Python · SQL · Streamlit</div>
         </div>
       </header>
 
-      <section class="grid" aria-label="Описание кейса">
+      <section class="grid" aria-label="Case overview">
         <div class="card span-7">
-          <h2>Контекст</h2>
+          <h2>Context</h2>
           <p>
-            Задача была поставлена без четких целей и формулировок. Я собрал требования, согласовал с бизнесом критерии и
-            метрики эффективности, погрузился в данные и запустил итеративную разработку решений.
+            The task came with no clear goals or definitions. I gathered the requirements, agreed the success
+            criteria and effectiveness metrics with the business, dug into the data, and started iterative development.
           </p>
         </div>
         <div class="card span-5">
-          <h2>Роль и взаимодействие</h2>
+          <h2>Role & collaboration</h2>
           <ul>
-            <li>Взаимодействие с заказчиками: монетизация, модерация, коммерция и реклама</li>
-            <li>Коммуникация с верификаторами, обработка жалоб и апелляций</li>
-            <li>Руководство группой web‑разработки, дата‑инженеров и системных аналитиков</li>
+            <li>Working with stakeholders: monetization, moderation, commerce and advertising</li>
+            <li>Liaising with verification partners, handling complaints and appeals</li>
+            <li>Leading a group of web developers, data engineers and systems analysts</li>
           </ul>
         </div>
 
         <div class="card span-12">
-          <h2>Ключевые достижения</h2>
+          <h2>Key achievements</h2>
           <ul>
-            <li>Алгоритмы детекции накруток просмотров: математическое моделирование и техническая реализация</li>
-            <li>Web‑приложения для быстрой проверки каналов на накрутку (Streamlit)</li>
-            <li>Алгоритмы выявления рекламных фродовых событий: переход от блокировки каналов к блокировке событий</li>
-            <li>Эксперименты для валидации эффективности и калибровки IVT на всем трафике</li>
-            <li>Продуктивизация: MR/код‑ревью, тестирование, CI/CD</li>
+            <li>View-inflation detection algorithms: mathematical modeling and engineering</li>
+            <li>Web apps for fast channel checks (Streamlit)</li>
+            <li>Ad-fraud event detection: shift from blocking channels to blocking events</li>
+            <li>Experiments to validate effectiveness and calibrate IVT across all traffic</li>
+            <li>Productionization: MR/code review, testing, CI/CD</li>
           </ul>
         </div>
       </section>
 
-      <section class="card" style="margin-top: 14px" aria-label="Таймлайн">
-        <h2>Таймлайн</h2>
+      <section class="card" style="margin-top: 14px" aria-label="Timeline">
+        <h2>Timeline</h2>
         <div class="timeline" role="list">
           <div class="t-item" role="listitem">
-            <div class="t-label">1.5 месяца</div>
+            <div class="t-label">1.5 months</div>
             <div class="t-body">
-              <h3>MVP и первые меры</h3>
+              <h3>MVP and first measures</h3>
               <ul>
-                <li>MVP‑скоринг каналов/видео (первая версия алгоритмов)</li>
-                <li>Внедрение “заморозки” вывода денег для предотвращения вывода накрученных начислений</li>
-                <li>Ручные меры: отключение рекламы, расторжение договора монетизации (ручной режим)</li>
-                <li>Обработка жалоб и апелляций (ручной режим)</li>
+                <li>MVP scoring of channels/videos (first version of the algorithms)</li>
+                <li>Introduced a payout "freeze" to prevent withdrawal of inflated earnings</li>
+                <li>Manual measures: disabling ads, terminating monetization contracts (manual)</li>
+                <li>Handling complaints and appeals (manual)</li>
               </ul>
             </div>
           </div>
 
           <div class="t-item" role="listitem">
-            <div class="t-label">2.5 месяца</div>
+            <div class="t-label">2.5 months</div>
             <div class="t-body">
-              <h3>Усиление алгоритмов и “переход в атаку”</h3>
+              <h3>Stronger algorithms and going on the offensive</h3>
               <ul>
-                <li>Улучшенные алгоритмы; проверка входящих заявок на монетизацию</li>
-                <li>Защита проекта на уровне C1, еженедельные отчеты</li>
-                <li>Web‑приложение на Streamlit для проверки каналов (полностью разработано мной)</li>
-                <li>Проработка механизма автоматического расторжения договора (взаимодействие систем)</li>
+                <li>Improved algorithms; vetting incoming monetization applications</li>
+                <li>Defending the project at C-level, weekly reports</li>
+                <li>Streamlit web app for channel checks (built entirely by me)</li>
+                <li>Designed an automated contract-termination flow (cross-system)</li>
               </ul>
             </div>
           </div>
 
           <div class="t-item" role="listitem">
-            <div class="t-label">5 месяцев</div>
+            <div class="t-label">5 months</div>
             <div class="t-body">
-              <h3>IP‑скоринг и антифрод по событиям рекламы</h3>
+              <h3>IP scoring and ad-event anti-fraud</h3>
               <ul>
-                <li>Скоринг IP + подключение данных сторонних баз</li>
-                <li>Классификация фрода: SIVT / GIVT / IVT</li>
-                <li>Найм и развитие команды (3 аналитика)</li>
-                <li>Блокировка фродовых событий показа рекламы по IP</li>
+                <li>IP scoring + third-party data sources</li>
+                <li>Fraud classification: SIVT / GIVT / IVT</li>
+                <li>Hiring and growing the team (3 analysts)</li>
+                <li>Blocking fraudulent ad-impression events by IP</li>
               </ul>
             </div>
           </div>
 
           <div class="t-item" role="listitem">
-            <div class="t-label">&gt; 8 месяцев</div>
+            <div class="t-label">&gt; 8 months</div>
             <div class="t-body">
-              <h3>Переход к ML и near real‑time</h3>
+              <h3>Move to ML and near real-time</h3>
               <ul>
-                <li>Старт перехода на ML‑антифрод</li>
-                <li>Развитие собственной антифрод‑платформы; подготовка к near real‑time антифроду</li>
-                <li>Масштабная амнистия каналов; сверка и калибровка по бенчмаркам верификаторов</li>
-                <li>Эксперименты по калибровке IVT на всем трафике</li>
+                <li>Started the move to ML-based anti-fraud</li>
+                <li>Building our own anti-fraud platform; preparing near real-time</li>
+                <li>Large-scale channel amnesty; reconciliation and calibration against verifier benchmarks</li>
+                <li>Experiments to calibrate IVT across all traffic</li>
               </ul>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="card" style="margin-top: 14px" aria-label="Результаты">
-        <h2>Результаты</h2>
+      <section class="card" style="margin-top: 14px" aria-label="Results">
+        <h2>Results</h2>
         <div class="metrics" style="margin-top: 12px">
           <div class="metric accent">
-            <p class="value">сотни млн ₽</p>
-            <p class="hint">Доказанная экономия за ~8 месяцев работы</p>
+            <p class="value">hundreds of M ₽</p>
+            <p class="hint">Proven savings over ~8 months</p>
           </div>
           <div class="metric good">
             <p class="value">LTV ×10+</p>
-            <p class="hint">Рост лояльности рекламодателей</p>
+            <p class="hint">Advertiser loyalty growth</p>
           </div>
           <div class="metric warn">
-            <p class="value">Качество</p>
-            <p class="hint">Повышение качества рекламной площадки</p>
+            <p class="value">Quality</p>
+            <p class="hint">Higher quality of the ad inventory</p>
           </div>
         </div>
       </section>
 
-      <section class="grid" style="margin-top: 14px" aria-label="Технологии">
+      <section class="grid" style="margin-top: 14px" aria-label="Technology">
         <div class="card span-12">
-          <h2>Стек и практики</h2>
+          <h2>Stack & practices</h2>
           <div class="pill-row">
-            <div class="pill"><strong>Языки</strong> Python · SQL</div>
-            <div class="pill"><strong>Данные</strong> ClickHouse · Trino</div>
-            <div class="pill"><strong>Оркестрация</strong> Airflow</div>
-            <div class="pill"><strong>Хранилища</strong> S3</div>
-            <div class="pill"><strong>Продукт</strong> Streamlit</div>
-            <div class="pill"><strong>Prod</strong> MR · Код‑ревью · CI/CD · Тестирование</div>
+            <div class="pill"><strong>Languages</strong> Python · SQL</div>
+            <div class="pill"><strong>Data</strong> ClickHouse · Trino</div>
+            <div class="pill"><strong>Orchestration</strong> Airflow</div>
+            <div class="pill"><strong>Storage</strong> S3</div>
+            <div class="pill"><strong>Product</strong> Streamlit</div>
+            <div class="pill"><strong>Prod</strong> MR · Code review · CI/CD · Testing</div>
           </div>
           <p class="footer">
-            Примечание: формулировки и метрики можно быстро адаптировать под конкретную вакансию (Anti‑Fraud / DS / Analyst /
-            TeamLead).
+            Note: wording and metrics can be quickly tailored to a specific role (Anti-Fraud / DS / Analyst / TeamLead).
           </p>
         </div>
       </section>
